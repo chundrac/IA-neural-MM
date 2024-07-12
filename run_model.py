@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import tensorflow as tf #tf.__version__ = '2.5.0'
 import random
@@ -211,12 +212,17 @@ for epoch in range(epochs):
         end = time.time()
         print(epoch,step,np.mean(epoch_losses),end-start)
         epoch_losses.append(loss_value)
-    X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
-    y = tf.one_hot(decoder_output[val_idx],n_output+1)[:,:,1:]
-    log_p_z,pred_out = model(X)
-    losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
-    val_loss = -tf.reduce_mean(tf.reduce_logsumexp(losses_z,-1))
-    val_losses.append(val_loss)
+    N__ = len(val_idx)
+    val_loss = 0
+    for (i,j) in list(zip(list(range(0,N__,batch_size)),list(range(batch_size,N__,batch_size))+[N__])):
+        batch_idx = val_idx[i:j]
+        X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
+        y = tf.one_hot(decoder_output[val_idx],n_output+1)[:,:,1:]
+        log_p_z,pred_out = model(X)
+        losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
+        loss_value = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
+        val_loss += loss_value
+    val_losses.append(val_loss/N__)
     if epoch > 0:
         if val_loss < val_losses[epoch-1]:
             tolerance += 1
@@ -231,5 +237,3 @@ for epoch in range(epochs):
         break
 
 print("stopped after {} epochs".format(epoch))
-
-
