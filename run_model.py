@@ -192,8 +192,8 @@ N_ = len(idx)
 tolerance = 0
 for epoch in range(epochs):
     np.random.shuffle(idx)
-    train_idx = idx[:int(9.*N_)]
-    val_idx = idx[int(9.*N_):]
+    train_idx = idx[:int(.9*N_)]
+    val_idx = idx[int(.9*N_):]
     N__ = len(train_idx)
     step = 0
     epoch_losses = []
