@@ -214,7 +214,7 @@ for epoch in range(epochs):
         epoch_losses.append(loss_value)
     N__ = len(val_idx)
     val_loss = 0
-    for (i,j) in list(zip(list(range(0,N__,batch_size)),list(range(batch_size,N__,batch_size))+[N__])):
+    for (i,j) in list(zip(list(range(0,N__,1)),list(range(1,N__,1))+[N__])):
         batch_idx = val_idx[i:j]
         X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
         y = tf.one_hot(decoder_output[val_idx],n_output+1)[:,:,1:]
@@ -230,9 +230,9 @@ for epoch in range(epochs):
             tolerance = 0
     model.save_weights('model_fits/{}_{}_{}.h5'.format(K,fold,seed))
     print("epoch mean loss: {}".format(np.mean(epoch_losses)))
-    inds = random.sample(test_inds,50)
-    for i in inds:
-        print(lang_raw[i],get_p_z(i),''.join(input_raw[i]),''.join(output_raw[i][1:-1]),' '.join([''.join(decode_sequence(i,k)[1:-1]) for k in range(K)]))
+    #inds = random.sample(test_inds,50)
+    #for i in inds:
+    #    print(lang_raw[i],get_p_z(i),''.join(input_raw[i]),''.join(output_raw[i][1:-1]),' '.join([''.join(decode_sequence(i,k)[1:-1]) for k in range(K)]))
     if tolerance == 5:
         break
 
