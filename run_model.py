@@ -222,6 +222,7 @@ for epoch in range(epochs):
         losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
         loss_value = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
         val_loss += loss_value
+        print(val_loss)
     val_losses.append(val_loss/N__)
     if epoch > 0:
         if val_loss < val_losses[epoch-1]:
