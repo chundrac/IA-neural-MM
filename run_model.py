@@ -213,16 +213,21 @@ for epoch in range(epochs):
         print(epoch,step,np.mean(epoch_losses),end-start)
         epoch_losses.append(loss_value)
     N__ = len(val_idx)
-    val_loss = 0
-    for (i,j) in list(zip(list(range(0,N__,1)),list(range(1,N__,1))+[N__])):
-        batch_idx = val_idx[i:j]
-        X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
-        y = tf.one_hot(decoder_output[val_idx],n_output+1)[:,:,1:]
-        log_p_z,pred_out = model(X)
-        losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
-        loss_value = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
-        val_loss += loss_value
-        print(val_loss)
+    #val_loss = 0
+    #for (i,j) in list(zip(list(range(0,N__,1)),list(range(1,N__,1))+[N__])):
+    #    batch_idx = val_idx[i:j]
+    #    X = [lang_id[batch_idx],pos_id[batch_idx],encoder_input[batch_idx],decoder_input[batch_idx]]
+    #    y = tf.one_hot(decoder_output[batch_idx],n_output+1)[:,:,1:]
+    #    log_p_z,pred_out = model(X)
+    #    losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
+    #    loss_value = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
+    #    val_loss += loss_value
+    #    print(val_loss)
+    X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
+    y = tf.one_hot(decoder_output[batch_idx],n_output+1)[:,:,1:]
+    log_p_z,pred_out = model(X)
+    losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
+    val_loss = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
     val_losses.append(val_loss/N__)
     if epoch > 0:
         if val_loss < val_losses[epoch-1]:
