@@ -160,7 +160,7 @@ model = mixtureED()
 
 learning_rate = 1e-3
 batch_size = 32
-epochs = 200
+epochs = 100
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
