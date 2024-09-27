@@ -224,7 +224,6 @@ for epoch in range(epochs):
         losses_z = log_p_z + tf.reduce_sum(pred_out*tf.expand_dims(y,-3),[-1,-2])
         loss_value = -tf.reduce_sum(tf.reduce_logsumexp(losses_z,-1))
         val_loss += loss_value
-        print(val_loss)
     #X = [lang_id[val_idx],pos_id[val_idx],encoder_input[val_idx],decoder_input[val_idx]]
     #y = tf.one_hot(decoder_output[val_idx],n_output+1)[:,:,1:]
     #log_p_z,pred_out = model(X)
