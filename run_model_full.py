@@ -104,7 +104,7 @@ hidden_dim = 64
 embed_dim = 64
 
 #np.random.seed(seed)
-#indices = np.arange(N)
+indices = np.arange(N)
 #np.random.shuffle(indices)
 
 fold_inds = [[indices[i] for i in range(j,k)] for (j,k) in zip(list(range(0,N,int(N/n_folds)))+[N][:-1],(list(range(0,N,int(N/n_folds)))+[N])[1:])]
