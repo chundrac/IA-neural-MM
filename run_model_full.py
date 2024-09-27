@@ -14,8 +14,6 @@ K = int(sys.argv[1])
 
 n_folds = 6
 
-assert(fold in range(0,n_folds))
-
 text = [l.strip('\n').split('\t') for l in open('cdial_wordlist.csv','r')]
 
 lang_counts = defaultdict(int)
@@ -162,7 +160,7 @@ model = mixtureED()
 
 learning_rate = 1e-3
 batch_size = 32
-epochs = 50
+epochs = 200
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
